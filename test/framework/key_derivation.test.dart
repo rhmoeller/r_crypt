@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:r_crypt/key_derivation/key_derivation.dart';
+import 'package:r_crypt/framework/key_derivation/*.dart';
 
 
 void keyDerivation() {
