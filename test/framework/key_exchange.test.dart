@@ -7,15 +7,26 @@ void keyExchange() {
     final String senderKeyExchangeInput = 'dolorem';
     final String recipientKeyExchangeInput = 'ipsum';
 
-    final String exchange = keyExchangeAlgorithm.exchange(senderKeyExchangeInput).resolveWith(recipientKeyExchangeInput);
+    final String exchange = keyExchangeAlgorithm.basedOn(senderKeyExchangeInput).resolveWith(recipientKeyExchangeInput);
 
     expect(exchange, 'dolorem ipsum');
   });
 }
 
-class KeyExchangeAlgorithmImpl extends KeyExchangeAlgorithm<String, String> {
+class KeyExchangeAlgorithmImpl extends KeyExchangeAlgorithm<String, String, String> {
   @override
-  String apply(String senderKeyExchangeInput, String recipientKeyExchangeInput) {
-    return "$senderKeyExchangeInput $recipientKeyExchangeInput";
+  KeyExchangePromise<String, String> basedOn(String internalExchangeInput) {
+    return KeyExchangePromiseImpl(internalExchangeInput);
+  }
+}
+
+class KeyExchangePromiseImpl extends KeyExchangePromise<String, String> {
+  final String internalExchangeInput;
+
+  KeyExchangePromiseImpl(this.internalExchangeInput);
+
+  @override
+  String resolveWith(String externalExchangeInput) {
+    return '$internalExchangeInput $externalExchangeInput';
   }
 }

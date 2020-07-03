@@ -1,13 +1,5 @@
-
 import 'promise.dart';
 
-abstract class KeyExchangeAlgorithm<EXCHANGE_INPUT, EXCHANGE_RESULT> {
-	KeyExchangePromise<EXCHANGE_INPUT, EXCHANGE_RESULT> exchange(final EXCHANGE_INPUT senderKeyExchangeInput) {
-		return KeyExchangePromise(
-			keyExchangeAlgorithm: this,
-			senderKeyExchangeInput: senderKeyExchangeInput
-			);
-	}
-
-	EXCHANGE_RESULT apply(final EXCHANGE_INPUT senderKeyExchangeInput, final EXCHANGE_INPUT recipientKeyExchangeInput);
+abstract class KeyExchangeAlgorithm<INTERNAL_EXCHANGE_INPUT, EXTERNAL_EXCHANGE_INPUT, EXCHANGE_RESULT> {
+  KeyExchangePromise<EXTERNAL_EXCHANGE_INPUT, EXCHANGE_RESULT> basedOn(final INTERNAL_EXCHANGE_INPUT internalExchangeInput);
 }

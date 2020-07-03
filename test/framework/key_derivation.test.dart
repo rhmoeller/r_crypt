@@ -4,7 +4,7 @@ import 'package:r_crypt/framework/key_derivation/*.dart';
 
 void keyDerivation() {
   test('executes key derivation and returns result', () {
-    final KeyDerivationFunction keyDerivation = KeyDerivationFunctionImpl();
+    final KeyDerivationAlgorithm keyDerivation = KeyDerivationFunctionImpl();
     final KeyDerivationInput<String, String> keyDerivationInput = KeyDerivationInput(input: 'input 1', carry: 'input 2');
 
     final KeyDerivationResult<String, String> derived = keyDerivation.derive(keyDerivationInput);
@@ -13,7 +13,7 @@ void keyDerivation() {
   });
 }
 
-class KeyDerivationFunctionImpl implements KeyDerivationFunction<String, String, String> {
+class KeyDerivationFunctionImpl implements KeyDerivationAlgorithm<String, String, String> {
   @override
   KeyDerivationResult<String, String> derive(KeyDerivationInput<String, String> keyDerivationInput) {
     return KeyDerivationResult(carry: "${keyDerivationInput.input} -> output 1", output: "${keyDerivationInput.carry} -> output 2");
