@@ -7,13 +7,13 @@ import 'secret.dart';
 import 'shared.dart';
 
 class DiffieHellmanSharedSecret extends KeyExchangePromise<DiffieHellmanSharedSecret, DiffieHellmanResult> {
-  final DiffieHellmanShared shared;
   final DiffieHellmanSecret secret;
+  final DiffieHellmanShared shared;
 
-  DiffieHellmanSharedSecret(this.shared, this.secret);
+  DiffieHellmanSharedSecret({this.shared, this.secret});
 
   @override
-  DiffieHellmanResult resolveWith(DiffieHellmanSharedSecret party) {
+  DiffieHellmanResult resolveWith(final DiffieHellmanSharedSecret party) {
     return DiffieHellmanResult(shared: shared, secret: secret, party: party);
   }
 
@@ -36,5 +36,4 @@ class DiffieHellmanSharedSecret extends KeyExchangePromise<DiffieHellmanSharedSe
   String toString() {
     return 'DiffieHellmanSharedSecret{shared: $shared, secret: $secret}';
   }
-
 }

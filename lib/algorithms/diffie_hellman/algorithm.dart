@@ -24,8 +24,8 @@ import 'shared_secret.dart';
 /// todo: Make this use bytes rather than int
 class DiffieHellman extends KeyExchangeAlgorithm<DiffieHellmanShared, DiffieHellmanSharedSecret, DiffieHellmanResult> {
   @override
-  DiffieHellmanSharedSecret basedOn(DiffieHellmanShared shared) {
-    return DiffieHellmanSharedSecret(shared, calculateSecretFrom(shared));
+  DiffieHellmanSharedSecret basedOn(final DiffieHellmanShared shared) {
+    return DiffieHellmanSharedSecret(shared: shared, secret: calculateSecretFrom(shared));
   }
 
   DiffieHellmanSecret calculateSecretFrom(final DiffieHellmanShared shared) {

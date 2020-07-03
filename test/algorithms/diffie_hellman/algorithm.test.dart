@@ -3,9 +3,10 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:r_crypt/algorithms/diffie_hellman/*.dart';
 
-const int g = 587; // any small prime number
-const int n = 4294967296; // this is as large as int can handle
 void algorithm() {
+  const int g = 587; // any small prime number
+  const int n = 4294967296; // this is as large as int can handle
+  // todo: refactor these tests into integration test package / separate classes
   group('basedOn', () {
     test('given public \'g\' and \'n\' return a key exchange that generates your public key \'pa\' based on your private key \'a\'', () {
       final DiffieHellmanShared shared = DiffieHellmanShared(n: n, g: g);
@@ -14,7 +15,7 @@ void algorithm() {
 
       final DiffieHellmanSharedSecret myPublicKey = diffieHellman.basedOn(shared);
 
-      expect(myPublicKey, DiffieHellmanSharedSecret(shared, secret));
+      expect(myPublicKey, DiffieHellmanSharedSecret(shared: shared, secret: secret));
       expect(myPublicKey.getValue(), pow(shared.g, secret.getValue()) % shared.n);
     });
 
@@ -23,8 +24,8 @@ void algorithm() {
         () {
       final DiffieHellmanShared diffieHellmanInput = DiffieHellmanShared(n: n, g: g);
       final DiffieHellmanSecret myPrivateKey = DiffieHellmanSecret(75);
-      final DiffieHellmanSharedSecret myPublicKey = DiffieHellmanSharedSecret(diffieHellmanInput, myPrivateKey);
-      final DiffieHellmanSharedSecret yourPublicKey = DiffieHellmanSharedSecret(diffieHellmanInput, DiffieHellmanSecret(123));
+      final DiffieHellmanSharedSecret myPublicKey = DiffieHellmanSharedSecret(shared: diffieHellmanInput, secret: myPrivateKey);
+      final DiffieHellmanSharedSecret yourPublicKey = DiffieHellmanSharedSecret(shared: diffieHellmanInput, secret: DiffieHellmanSecret(123));
 
       final DiffieHellmanResult diffieHellmanResult = myPublicKey.resolveWith(yourPublicKey);
 
@@ -47,13 +48,13 @@ void algorithm() {
   test('IntegrationTest', () {
     final DiffieHellman diffieHellman = DiffieHellman();
     final DiffieHellmanShared shared = DiffieHellmanShared(n: n, g: g);
-    final DiffieHellmanSharedSecret yourSharedSecret = DiffieHellmanSharedSecret(shared, diffieHellman.calculateSecretFrom(shared));
+    final DiffieHellmanSharedSecret yourSharedSecret = DiffieHellmanSharedSecret(shared: shared, secret: diffieHellman.calculateSecretFrom(shared));
 
     final DiffieHellmanSharedSecret mySharedSecret = diffieHellman.basedOn(shared);
     final DiffieHellmanResult diffieHellmanResult = mySharedSecret.resolveWith(yourSharedSecret);
 
     expect(diffieHellmanResult, DiffieHellmanResult(shared: shared, secret: mySharedSecret.secret, party: yourSharedSecret));
-    expect(diffieHellmanResult.getValue(), pow(yourSharedSecret.getValue(), mySharedSecret.secret.getValue()) % n);
+    expect(diffieHellmanResult.getValue(), pow(yourSharedSecret.getValue(), mySharedSecret.secret.getValue()) % shared.n);
   });
 }
 
