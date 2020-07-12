@@ -59,12 +59,12 @@ void algorithm() {
 }
 
 class DiffieHellmanStub extends DiffieHellman {
-  final DiffieHellmanSecret secret;
+	final DiffieHellmanSecret secret;
 
-  DiffieHellmanStub(this.secret);
+	DiffieHellmanStub(this.secret);
 
-  @override
-  DiffieHellmanSecret calculateSecretFrom(final DiffieHellmanShared ignored) {
-    return secret; // Stubbed private key number
-  }
+	@override
+	DiffieHellmanSecret calculateSecretFrom(final DiffieHellmanShared ignored) {
+		return secret; // Stubbed private key number
+	}
 }
